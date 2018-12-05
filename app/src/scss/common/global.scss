@@ -1,0 +1,17 @@
+@import '~mfex-core/scss/common/global';
+
+.music {
+    display: block;
+    position: fixed;
+    width: 49px;
+    height: 49px;
+    top: 20px;
+    right: 30px;
+    background: assetsURL('img/music-close.png') no-repeat center center / contain !important;
+    z-index: 2000;
+
+    &.g-music--active {
+        background: assetsURL('img/music.png') no-repeat center center / contain !important;
+    }
+}
+

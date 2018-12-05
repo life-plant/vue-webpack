@@ -1,0 +1,9 @@
+@import '~mfex-core/scss/base/mixin';
+
+@mixin location-item($w, $h, $t, $l) {
+    position: absolute;
+    width: $w;
+    height: $h;
+    top: $t;
+    left: $l;
+}

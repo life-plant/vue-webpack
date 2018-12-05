@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=750, user-scalable=no">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <title>海普诺凯1897 为孕程护航</title>
+    <link rel="stylesheet" type="text/css" href="app.css" />
+    <link rel="stylesheet" type="text/css" href="vendor.css" />
+    <script>
+        if ('{%$ENVIRONMENT_MAIN%}' === 'product') {
+            window.SERVER_ENV = 'production';
+        }
+
+        window.__CDN_HOST__ = '{%$cdnHost%}';
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <router-view></router-view>
+    </div>
+    <script src="//res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="//static.mama.cn/std/lib/MamaJSBridge/1.2.0/MamaJSBridge.min.js"></script>
+</body>
+
+</html>
