@@ -9,7 +9,7 @@ module.exports = {
      * @return {String}      完整 URI
      */
     assetsURL: function(relativePath) {
-        return '//localhost:9000/asset/' + relativePath;
+        return '//localhost:9001/asset/' + relativePath;
     },
     /**
      * 返回 static-files.mama.cn CDN 下的资源链接
@@ -17,6 +17,6 @@ module.exports = {
      * @return {String}      完整 URI
      */
     staticFilesURL: function(relativePath) {
-        return '//localhost:9000/asset/' + relativePath;
+        return '//localhost:9001/asset/' + relativePath;
     },
 };

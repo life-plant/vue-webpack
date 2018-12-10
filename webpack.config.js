@@ -1,28 +1,55 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin =require('extract-text-webpack-plugin');
-var path =require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin =require('extract-text-webpack-plugin');
+const path =require('path');
+const webpack = require('webpack');
 
 let babelLoaderOptions = {
     "presets": ["env", "stage-2"],
     "plugins": ["transform-runtime"]
 }
-let host = '//localhost:9000'
+let host = '//localhost:9001'
 let deployTag = 'KYLXL4u'
 let config = {
     paths: {
         src: path.resolve(__dirname,"app/src"),
     }
 }
-console.log(config.paths.src);
+const excludeRegexStr = `node_modules(?!(\/|\\\\)(mfex-core))`;
+const excludeRegex = new RegExp(excludeRegexStr);
 module.exports = {
     entry: {
-        vendor: ["babel-polyfill", "./app/src/js/vendor"],
+        vendor: ["./app/src/js/vendor"],
         app: ["./app/src/js/app"],
     },
     output: {
         path: path.resolve(__dirname,"app/dist"),
         publicPath: "",
-        filename: 'js/[name]/[chunkhash:8].bundle.js',
+        filename: 'js/[name].[hash:8].bundle.js',
+    },
+    devServer: {
+        contentBase: path.join(__dirname, 'app'), // 非从webpack打包的资源从这里加载
+        compress: false, // 是否压缩
+        port: 9001,
+        hot: true, //模块热替换 new webpack.HotModuleReplacementPlugin(),
+        inline: true, // 是否启用自动刷新
+        // 定义打印信息的规则
+        stats: {
+            publicPath: true,
+            // 打印模块的信息
+            modules: false,
+            // 显示资源的文件信息
+            assets: false,
+        },
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },    
+        proxy: {
+            "/Api": {
+              target: "http://act.mama.cn",
+              changeOrigin: true,
+              secure: false,
+            }
+        }
     },
     // mode: 'development', // webpack2不支持这个属性
     module: {
@@ -33,7 +60,7 @@ module.exports = {
                 loader: 'babel-loader',
                 options: babelLoaderOptions,
             }],
-            exclude: /node_modules/,
+            exclude: excludeRegex,
         },
         {
             test: /\.vue$/,
@@ -116,36 +143,13 @@ module.exports = {
                 }]
             })
         },
-        {
-            test: /\.(html)$/,
-                use: {
-                loader: 'html-withimg-loader',
-            }
-        },
-//         {
-//             test: /\.(png|jpg)$/,
-//             loader: 'url-loader',
-//             options: {
-//                 limit: 10000,
-//                 mimetype: 'image/png',
-//                 name: 'src/assets/[name].[ext]'
-//             }
-// 　　　　 }
       ]
     },
-    devServer: {
-        contentBase: path.join(__dirname, 'app'),
-        compress: false,
-        port: 9000,
-        hot: true,
-        inline: false,
-        clientLogLevel: 'warning',
-        stats: {
-            assets: false
-        }
-    },
     resolve: {
+        // 定义扩展名
         extensions: ['.js', '.vue'],
+        // 定义引用路径的别名
+        // modules: 默认查找路径下的node_modules
         alias: {
             js: path.join(config.paths.src, 'js'),
             scss: path.join(config.paths.src, 'scss'),
@@ -155,7 +159,7 @@ module.exports = {
             page: path.join(config.paths.src, 'js/page'),
             vendor: path.join(config.paths.src, 'vendor'),
             'v-component': path.join(config.paths.src, 'js/v-component'),
-            'v-components': path.join(config.paths.src, 'js/v-components'), // 暂时兼容旧版项目
+            'v-components': path.join(config.paths.src, 'js/v-components'),
             'v-directive': path.join(config.paths.src, 'js/v-directive'),
             'v-filter': path.join(config.paths.src, 'js/v-filter'),
             'v-mixin': path.join(config.paths.src, 'js/v-mixin'),
@@ -166,12 +170,25 @@ module.exports = {
         }
     },
     plugins:[
-        new ExtractTextPlugin("[name].css"),
-        new HtmlWebpackPlugin({
-            template: 'html-withimg-loader!' + path.resolve(__dirname, './app/wapindex.html'),
-            filename:'index.html',
-            chunks:['vendor', 'app']
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': "'development'"
         }),
+        new ExtractTextPlugin("[name].[hash:8].css"),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, './app/index.html'),
+            filename:'index.html',
+            inject: true, // 是否注入css和js
+            alwaysWriteToDisk: true,
+            chunks:['vendor', 'app'], // 默认全部加载
+        }),
+        // new HtmlWebpackPlugin({  // Also generate a test.html
+        //     filename: 'style.html',
+        //     template: path.resolve(__dirname, './build/tpl/style.tpl'),
+        //     alwaysWriteToDisk: true,
+        //     inject: false,
+        // }),
+        
     ]
 }
 

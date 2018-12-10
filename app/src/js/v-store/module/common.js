@@ -43,7 +43,8 @@ const actions = {
                 url: config.API.getCommon,
                 method: 'get',
                 params: {
-                }
+                },
+                baseURL: ''
             }).then(res => {
                 if (res.data.code == 0) {
                     commit(types.COMMON.SET_DATA, res.data.data);

@@ -131,7 +131,7 @@ export default {
                     })
                 }
             }).catch(() =>{
-                self.loadShow = -1;
+                // self.loadShow = -1;
             })
         },
         changeLoadShow(value) {

@@ -1,5 +1,6 @@
 <template>
     <div class="result">
+        11aa
         <div class="user-info">
             <div class="avatar"><img :src="commonData.head_img"></div>
             <div class="username">{{commonData.uname}}</div>
@@ -46,9 +47,9 @@ export default {
         popWrapper,
     },
     created() {
-        if (utils.checkLogin()){
+        // if (utils.checkLogin()){
             this.getWinResult();
-        }
+        // }
     },
     methods: {
         hideWrraper() {
@@ -83,7 +84,7 @@ export default {
                     this.pageInfo.page++;
                 } else if (respData.code == 11001) {
                     // 未登录
-                    utils.checkLogin(true);
+                    // utils.checkLogin(true);
                 } else if (respData.code == 6010409) {
                     // 结果未公布
                     this.$emit('popMsg', {

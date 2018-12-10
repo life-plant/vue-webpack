@@ -14,7 +14,7 @@
             <div class="btn-regular" @click="pop(1, 1)"></div>
             <div class="btn-rank" @click="rankPop" v-if="showRank" ></div>
             <div class="btn-jump-scene" @click="jumpScene"  v-if="pageType == 1">
-                回顾场景
+                回顾场景1
             </div>
         </div>
         <popWrapper :popType='popData.popType' :subPopType='popData.subPopType' :cardNum='popData.cardNum' :rankList='helpList' @hide='hideWrraper' @hasSubWinData='hasSubWinData' @popMsg='popMsg'></popWrapper>
@@ -72,7 +72,7 @@ export default {
     methods: {
         initPage() {
             // 游戏页
-            if (utils.checkLogin()) {
+            // if (utils.checkLogin()) {
                 if (this.pageType == 1) {
                     // 游戏页-发起者视觉
                     this.initData({})
@@ -82,7 +82,7 @@ export default {
                     this.$router.push({
                         path: '/fail',
                     })
-                }
+               // }
             }
         },
         rankPop() {
@@ -165,7 +165,7 @@ export default {
             this.popMsg('提交成功');
         },
         initData(data) {
-            this.$store.dispatch('game/initGamePage', data).then((code)=>{
+            this.initCommon().then((code)=>{
                 if (code == 0) {
                     // 获得数据
                     this.gameData = this.$store.state.game.gameData;
@@ -191,7 +191,23 @@ export default {
                     utils.checkLogin(true);
                 }
             }).catch(() => {
-                this.$emit('loadShow', -1)
+                // this.$emit('loadShow', -1)
+            });
+        },
+        initCommon() {
+            return new Promise((resolve, reject) => {
+                $.get({
+                    url: config.API.getCommon,
+                }).then(res => {
+                    if (res.data.code == 0) {
+                        commit(types.COMMON.SET_DATA, res.data.data);
+                        resolve();
+                    } else {
+                        reject(res.data.msg);
+                    }
+                }).catch(err => {
+                    reject(-1);
+                });
             });
         },
         toInvoke() {

@@ -10,7 +10,7 @@ import siteConfig from 'site-config';
 import qs from 'qs';
 import jsonp from 'jsonp';
 
-axios.defaults.baseURL = siteConfig.API_BASE_URL;
+axios.defaults.baseURL = '';
 
 // 发送请求前做特殊处理
 axios.interceptors.request.use(

@@ -3,7 +3,7 @@
  */
 
 export default {
-    API_BASE_URL: '//act.mama.cn',
+    API_BASE_URL: '',
     API: {
         // app页
         getCommon: '/Api/Subject/Pregnancy/getCommon',

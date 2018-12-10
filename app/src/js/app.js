@@ -11,7 +11,7 @@ import loading from 'v-component/smart/loading.vue';
 import netErr from 'v-component/smart/net-err.vue';
 import msg from 'v-component/dumb/msg.vue';
 
-
+console.log(process.env.NODE_ENV);
 // Fundebug API KEY
 monitor.setApikey('ab95e08d53312ccd75c74a5b303af52feb3e4065e246d6a618898826cb45733d');
 monitor.handleErr4Vue(Vue);
